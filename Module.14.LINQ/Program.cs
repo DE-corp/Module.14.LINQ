@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace Module._14.LINQ
 {
@@ -7,22 +7,21 @@ namespace Module._14.LINQ
     {
         static void Main(string[] args)
         {
-            string[] people = { "Анна", "Мария", "Сергей", "Алексей", "Дмитрий", "Ян" };
-            var orderedList = new List<string>();
-            foreach (string item in people)
+            var objects = new List<object>()
             {
-                if (item[0] != 'А')
-                {
-                    orderedList.Add(item);
-                }
-            }
+               1,
+               "Сергей ",
+               "Андрей ",
+               300,
+            };
 
-            orderedList.Sort();
+            var names = from p in objects // промежуточная переменная p 
+                        where p.GetType() == typeof(string) // фильтрация по условию
+                        orderby p // сортировка по возрастанию (дефолтная)
+                        select p; // выбираем объект и сохраняем в выборку
 
-            foreach (var item in orderedList)
-            {
-                Console.WriteLine(item);
-            }
+            foreach (string name in names)
+                System.Console.WriteLine(name);
         }
     }
 }
