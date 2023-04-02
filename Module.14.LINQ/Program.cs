@@ -15,10 +15,7 @@ namespace Module._14.LINQ
                300,
             };
 
-            var names = from p in objects // промежуточная переменная p 
-                        where p.GetType() == typeof(string) // фильтрация по условию
-                        orderby p // сортировка по возрастанию (дефолтная)
-                        select p; // выбираем объект и сохраняем в выборку
+            var names = objects.Where(n => n is string).OrderBy(n => n);
 
             foreach (string name in names)
                 System.Console.WriteLine(name);
