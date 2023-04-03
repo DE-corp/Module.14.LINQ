@@ -8,20 +8,17 @@ namespace Module._14.LINQ
     {
         static void Main(string[] args)
         {
-            var companies = new Dictionary<string, string[]>();
+            var numsList = new List<int[]>()
+            {
+               new[] {2, 3, 7, 1},
+               new[] {45, 17, 88, 0},
+               new[] {23, 32, 44, -6},
+            };
 
-            companies.Add("Apple", new[] { "Mobile", "Desktop" });
-            companies.Add("Samsung", new[] { "Mobile" });
-            companies.Add("IBM", new[] { "Desktop" });
+            var newList = numsList.SelectMany(s => s).OrderBy(s => s);
 
-            var comp = from c in companies
-                       from t in c.Value
-                       where t.Contains("Mobile")
-                       orderby c.Key descending
-                       select c.Key;
-
-            foreach (var c in comp)
-                Console.WriteLine(c);
+            foreach (var num in newList)
+                Console.WriteLine(num);
         }
     }
 }
