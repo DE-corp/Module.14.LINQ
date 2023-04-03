@@ -8,19 +8,20 @@ namespace Module._14.LINQ
     {
         static void Main(string[] args)
         {
-            string[] text = { "Раз два три",
-                "четыре пять шесть",
-                "семь восемь девять" };
+            var companies = new Dictionary<string, string[]>();
 
-            var words = from str in text // пробегаемся по элементам массива
-                        from word in str.Split(' ') // дробим каждый элемент по пробелам, сохраняя в новую последовательность
-                        select word; // собираем все куски в результирующую выборку
+            companies.Add("Apple", new[] { "Mobile", "Desktop" });
+            companies.Add("Samsung", new[] { "Mobile" });
+            companies.Add("IBM", new[] { "Desktop" });
 
-            // выводим результат
-            foreach (var word in words)
-                Console.WriteLine(word);
+            var comp = from c in companies
+                       from t in c.Value
+                       where t.Contains("Mobile")
+                       orderby c.Key descending
+                       select c.Key;
 
+            foreach (var c in comp)
+                Console.WriteLine(c);
         }
-
     }
 }
