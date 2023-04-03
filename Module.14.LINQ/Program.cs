@@ -8,17 +8,16 @@ namespace Module._14.LINQ
     {
         static void Main(string[] args)
         {
-            var numsList = new List<int[]>()
+            string[] words = { "Обезьяна", "Лягушка", "Кот", "Собака", "Черепаха" };
+
+            var newList = words.Select(w => new
             {
-               new[] {2, 3, 7, 1},
-               new[] {45, 17, 88, 0},
-               new[] {23, 32, 44, -6},
-            };
+                Name = w,
+                Count = w.Length
+            }).OrderByDescending(w => w.Count);
 
-            var newList = numsList.SelectMany(s => s).OrderBy(s => s);
-
-            foreach (var num in newList)
-                Console.WriteLine(num);
+            foreach (var word in newList)
+                Console.WriteLine(word.Name + " " + word.Count);
         }
     }
 }
