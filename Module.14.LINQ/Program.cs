@@ -6,48 +6,57 @@ namespace Module._14.LINQ
 {
     class Program
     {
-        class Student
+        class Contact
         {
             public string Name { get; set; }
-            public int Age { get; set; }
-            public List<string> Languages { get; set; }
-
-        }
-        class Coarse
-        {
-            public string Name { get; set; }
-            public DateTime StartDate { get; set; }
+            public long Phone { get; set; }
         }
 
         static void Main(string[] args)
         {
-            // Список студентов
-            var students = new List<Student>
+            var contacts = new List<Contact>()
             {
-               new Student {Name="Андрей", Age=23, Languages = new List<string> {"английский", "немецкий" }},
-               new Student {Name="Сергей", Age=27, Languages = new List<string> {"английский", "французский" }},
-               new Student {Name="Дмитрий", Age=29, Languages = new List<string> {"английский", "испанский" }}
+               new Contact() { Name = "Андрей", Phone = 7999945005 },
+               new Contact() { Name = "Сергей", Phone = 799990455 },
+               new Contact() { Name = "Иван", Phone = 79999675 },
+               new Contact() { Name = "Игорь", Phone = 8884994 },
+               new Contact() { Name = "Анна", Phone = 665565656 },
+               new Contact() { Name = "Василий", Phone = 3434 }
             };
 
-            // Список курсов
-            var coarses = new List<Coarse>
+            while (true)
             {
-               new Coarse {Name="Язык программирования C#", StartDate = new DateTime(2020, 12, 20)},
-               new Coarse {Name="Язык SQL и реляционные базы данных", StartDate = new DateTime(2020, 12, 15)},
-            };
+                IEnumerable<Contact> page = null;
 
-            // добавим студентов в курсы
-            var studentsWithCoarses = from stud in students
-                                      where stud.Age <= 29
-                                      where stud.Languages.Contains("английский")
-                                      let birth = DateTime.Now.Year - stud.Age
-                                      from coarse in coarses
-                                      where coarse.Name == "Язык программирования C#"
-                                      select new { Name = stud.Name, BirthYear = birth, CoarseName = coarse.Name };
+                Console.Write("Введи страницу: ");
+                var isInt = int.TryParse(Console.ReadLine(), out int pageCount);
+                Console.Clear();
 
-            // выведем результат
-            foreach (var stud in studentsWithCoarses)
-                Console.WriteLine($"Студент {stud.Name} {stud.BirthYear} добавлен в курс {stud.CoarseName}");
+                if (isInt)
+                {
+                    switch (pageCount)
+                    {
+                        case (1):
+                            page = contacts.Take(2);
+                            break;
+                        case (2):
+                            page = contacts.Skip(2).Take(2);
+                            break;
+                        case (3):
+                            page = contacts.Skip(4).Take(2);
+                            break;
+                    }
+
+                    if (page != null)
+                    {
+                        foreach (var item in page)
+                            Console.WriteLine(item.Name + " " + item.Phone);
+                    }
+                }
+                else
+                    Console.WriteLine("Введи число!");
+
+            }
         }
     }
 }
