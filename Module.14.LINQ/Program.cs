@@ -6,22 +6,6 @@ namespace Module._14.LINQ
 {
     class Program
     {
-        class Contact
-        {
-            public string FirstName { get; set; }
-            public string LastName { get; set; }
-            public long Phone { get; set; }
-            public string Email { get; set; }
-            public Contact(string firstName, string lastName, long phone, string email)
-            {
-                FirstName = firstName;
-                LastName = lastName;
-                Phone = phone;
-                Email = email;
-            }
-
-        }
-
         static void Main(string[] args)
         {
             var phoneBook = new List<Contact>();
@@ -34,9 +18,15 @@ namespace Module._14.LINQ
             phoneBook.Add(new Contact("Сергей", "Брин", 799900000013, "serg@example.com"));
             phoneBook.Add(new Contact("Иннокентий", "Смоктуновский", 799900000013, "innokentii@example.com"));
 
+            // Сортируем коллекцию сперва по имени, а затем по фамилии
+            var sortedPhoneBook = phoneBook.OrderBy(c => c.FirstName).ThenBy(c => c.LastName);
+            foreach (var contact in sortedPhoneBook)
+                Console.WriteLine(contact.FirstName + " " + contact.LastName + ": " + contact.Phone);
+
             while (true)
             {
                 // Читаем введенный с консоли символ
+                Console.Write("\nВведите страницу: ");
                 var input = Console.ReadKey().KeyChar;
 
                 // проверяем, число ли это
@@ -52,7 +42,7 @@ namespace Module._14.LINQ
                 else
                 {
                     // пропускаем нужное количество элементов и берем 2 для показа на странице
-                    var pageContent = phoneBook.Skip((pageNumber - 1) * 2).Take(2);
+                    var pageContent = sortedPhoneBook.Skip((pageNumber - 1) * 2).Take(2);
                     Console.WriteLine();
 
                     // выводим результат
