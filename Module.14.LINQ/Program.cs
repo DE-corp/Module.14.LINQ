@@ -8,54 +8,59 @@ namespace Module._14.LINQ
     {
         class Contact
         {
-            public string Name { get; set; }
+            public string FirstName { get; set; }
+            public string LastName { get; set; }
             public long Phone { get; set; }
+            public string Email { get; set; }
+            public Contact(string firstName, string lastName, long phone, string email)
+            {
+                FirstName = firstName;
+                LastName = lastName;
+                Phone = phone;
+                Email = email;
+            }
+
         }
 
         static void Main(string[] args)
         {
-            var contacts = new List<Contact>()
-            {
-               new Contact() { Name = "Андрей", Phone = 7999945005 },
-               new Contact() { Name = "Сергей", Phone = 799990455 },
-               new Contact() { Name = "Иван", Phone = 79999675 },
-               new Contact() { Name = "Игорь", Phone = 8884994 },
-               new Contact() { Name = "Анна", Phone = 665565656 },
-               new Contact() { Name = "Василий", Phone = 3434 }
-            };
+            var phoneBook = new List<Contact>();
+
+            // добавляем контакты
+            phoneBook.Add(new Contact("Игорь", "Николаев", 79990000001, "igor@example.com"));
+            phoneBook.Add(new Contact("Сергей", "Довлатов", 79990000010, "serge@example.com"));
+            phoneBook.Add(new Contact("Анатолий", "Карпов", 79990000011, "anatoly@example.com"));
+            phoneBook.Add(new Contact("Валерий", "Леонтьев", 79990000012, "valera@example.com"));
+            phoneBook.Add(new Contact("Сергей", "Брин", 799900000013, "serg@example.com"));
+            phoneBook.Add(new Contact("Иннокентий", "Смоктуновский", 799900000013, "innokentii@example.com"));
 
             while (true)
             {
-                IEnumerable<Contact> page = null;
+                // Читаем введенный с консоли символ
+                var input = Console.ReadKey().KeyChar;
 
-                Console.Write("Введи страницу: ");
-                var isInt = int.TryParse(Console.ReadLine(), out int pageCount);
-                Console.Clear();
+                // проверяем, число ли это
+                var parsed = Int32.TryParse(input.ToString(), out int pageNumber);
 
-                if (isInt)
+                // если не соответствует критериям - показываем ошибку
+                if (!parsed || pageNumber < 1 || pageNumber > 3)
                 {
-                    switch (pageCount)
-                    {
-                        case (1):
-                            page = contacts.Take(2);
-                            break;
-                        case (2):
-                            page = contacts.Skip(2).Take(2);
-                            break;
-                        case (3):
-                            page = contacts.Skip(4).Take(2);
-                            break;
-                    }
-
-                    if (page != null)
-                    {
-                        foreach (var item in page)
-                            Console.WriteLine(item.Name + " " + item.Phone);
-                    }
+                    Console.WriteLine();
+                    Console.WriteLine("Страницы не существует");
                 }
+                // если соответствует - запускаем вывод
                 else
-                    Console.WriteLine("Введи число!");
+                {
+                    // пропускаем нужное количество элементов и берем 2 для показа на странице
+                    var pageContent = phoneBook.Skip((pageNumber - 1) * 2).Take(2);
+                    Console.WriteLine();
 
+                    // выводим результат
+                    foreach (var entry in pageContent)
+                        Console.WriteLine(entry.FirstName + " " + entry.LastName + ": " + entry.Phone);
+
+                    Console.WriteLine();
+                }
             }
         }
     }
